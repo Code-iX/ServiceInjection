@@ -10,11 +10,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A959D173-214B-45C4-A111-C7689CA4EC54}"
 	ProjectSection(SolutionItems) = preProject
 		CONTRIBUTING.md = CONTRIBUTING.md
+		.github\FUNDING.yml = .github\FUNDING.yml
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInjection.SourceGenerators.Tests", "ServiceInjection.SourceGenerators.Tests\ServiceInjection.SourceGenerators.Tests.csproj", "{13BB96E1-9A97-4B90-939A-17B7FE13268F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceInjection.SourceGenerators.Tests", "ServiceInjection.SourceGenerators.Tests\ServiceInjection.SourceGenerators.Tests.csproj", "{13BB96E1-9A97-4B90-939A-17B7FE13268F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C0BD680F-40D5-454C-A8FC-7776C4B8C458}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\master.yml = .github\workflows\master.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
