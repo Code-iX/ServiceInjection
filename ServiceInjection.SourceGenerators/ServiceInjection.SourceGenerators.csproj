@@ -9,41 +9,45 @@
 		<RootNamespace>CodeIX.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Title>Service Injection</Title>
 		<RepositoryUrl>https://github.com/Matt-17/ServiceInjection</RepositoryUrl>
-		<VersionPrefix>0.1.0</VersionPrefix>
-		<VersionSuffix>alpha3</VersionSuffix>
+		<VersionPrefix>0.1.1</VersionPrefix>
+		<VersionSuffix>alpha</VersionSuffix>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageId>CodeIX.ServiceInjection</PackageId>
 		<AssemblyName>CodeIX.$(MSBuildProjectName)</AssemblyName>
 		<Authors>Matthias Voigt</Authors>
+		<Description>ServiceInjection is a Roslyn-based source generator for .NET that facilitates automatic dependency injection into classes. It allows services and dependencies to be inserted into classes without manually initializing them in the constructor.</Description>
+		<Copyright>2023 Matthias Voigt</Copyright>
+		<PackageProjectUrl>https://github.com/Matt-17/ServiceInjection</PackageProjectUrl>
+		<PackageTags>Services;ServiceProvider;Dependency;Injection;DependencyInjection;IoC</PackageTags>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<PackageIcon>ServiceInjection.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\ServiceInjection\ServiceInjection.csproj" PrivateAssets="all"/>
-	</ItemGroup>
-	<ItemGroup>
+		<ProjectReference Include="..\ServiceInjection\ServiceInjection.csproj" PrivateAssets="all" />
 		<InternalsVisibleTo Include="ServiceInjection.SourceGenerators.Tests" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/netstandard2.0/cs" Visible="false" />
 		<None Include="$(OutputPath)\CodeIX.ServiceInjection.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="true" />
 		<None Include="$(OutputPath)\CodeIX.ServiceInjection.pdb" Pack="true" PackagePath="lib/netstandard2.0" Visible="true" />
 		<None Include="..\LICENSE.txt" Pack="true" PackagePath="\" />
 		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\ServiceInjection.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 		<None Remove="bin\Debug\netstandard2.0\\ServiceInjection.SourceGenerator.dll" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-	</PropertyGroup>
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
 			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))"/>
+			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
 		</ItemGroup>
 
 		<!-- Print batches for debug purposes -->
@@ -51,7 +55,7 @@
 
 		<ItemGroup>
 			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
 		</ItemGroup>
 	</Target>
 </Project>

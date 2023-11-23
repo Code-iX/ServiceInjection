@@ -24,13 +24,13 @@ public class SourceCodeFactoryTests
         symbol.Name.Returns("MyName");
 
         var typeSymbol = Substitute.For<ITypeSymbol>();
+        typeSymbol.Name.Returns("MyClass");
 
         var injections = new List<Injection>
         {
             new()
             {
                 Name = "MyDependentName",
-                Required = true,
                 Type = typeSymbol
             }
         };
@@ -55,7 +55,7 @@ namespace MyNamespace
 {
     partial class MyName
     {
-        public MyName( MyDependentName)
+        public MyName(MyClass MyDependentName)
         {
             this.MyDependentName = MyDependentName ?? throw new ArgumentNullException(nameof(MyDependentName));
         }

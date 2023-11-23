@@ -6,7 +6,7 @@ namespace CodeIX.ServiceInjection.SourceGenerators
     {
         public string Name { get; set; }
 
-        public bool Required { get; set; }
+        public bool IsOptional { get; set; }
 
         public ITypeSymbol Type { get; set; }
 

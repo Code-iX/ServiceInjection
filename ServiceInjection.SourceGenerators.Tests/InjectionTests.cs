@@ -1,7 +1,5 @@
 ﻿using CodeIX.ServiceInjection.SourceGenerators;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace ServiceInjection.SourceGenerators.Tests;
 
 [TestClass]
@@ -18,7 +16,7 @@ public class InjectionTests
 
         // Assert
         Assert.IsNotNull(injection);
-        Assert.IsFalse(injection.Required);
+        Assert.IsFalse(injection.IsOptional);
         Assert.IsNull(injection.Type);
         Assert.IsNull(injection.InjectedType);
     }

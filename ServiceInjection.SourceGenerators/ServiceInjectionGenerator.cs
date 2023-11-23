@@ -14,6 +14,7 @@ public class ServiceInjectionGenerator : ISourceGenerator
 
     public void Initialize(GeneratorInitializationContext context)
     {
+        // No initialization required
     }
 
     public void Execute(GeneratorExecutionContext context)
@@ -31,7 +32,7 @@ public class ServiceInjectionGenerator : ISourceGenerator
     internal void GenerateCodeForClass(GeneratorExecutionContext context, INamedTypeSymbol symbol)
     {
         var injections = GetInjectedMembers(symbol)
-                .OrderBy(i => !i.Required)
+                .OrderBy(i => i.IsOptional)
                 .ToList()
             ;
 
@@ -71,7 +72,7 @@ public class ServiceInjectionGenerator : ISourceGenerator
         {
             Name = GetNameFromMember(member),
             Type = GetTypeFromMember(member),
-            Required = GetRequiredFromAttribute(injectedAttribute),
+            IsOptional = GetIsOptionalFromAttribute(injectedAttribute),
             InjectedType = GetInjectedTypeFromAttribute(injectedAttribute)
         };
     }
@@ -87,8 +88,8 @@ public class ServiceInjectionGenerator : ISourceGenerator
             _ => throw new NotSupportedException()
         };
 
-    internal static bool GetRequiredFromAttribute(AttributeData attribute) =>
-        attribute.ConstructorArguments.FirstOrDefault().Value as bool? ?? true;
+    internal static bool GetIsOptionalFromAttribute(AttributeData attribute) =>
+        attribute.ConstructorArguments.FirstOrDefault().Value as bool? ?? false;
 
     internal static ITypeSymbol GetInjectedTypeFromAttribute(AttributeData attribute) =>
         attribute.ConstructorArguments

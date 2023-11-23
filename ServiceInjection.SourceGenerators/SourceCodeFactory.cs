@@ -30,7 +30,7 @@ internal class SourceCodeFactory
         sb.AppendLine("{");
         sb.AppendLine($"    partial class {_symbol.Name}");
         sb.AppendLine("    {");
-        AppendCtor(sb, "        ");
+        AppendConstructor(sb, "        ");
         AppendCall(sb, "            ");
         sb.AppendLine("        {");
         AppendBody(sb, "            ");
@@ -121,20 +121,47 @@ internal class SourceCodeFactory
         return "default";
     }
 
-    private void AppendCtor(StringBuilder sb, string indent)
+    private void AppendConstructor(StringBuilder sb, string indent)
     {
         sb.Append(indent + $"public {_symbol.Name}(");
         var skipFirst = true;
         foreach (var injection in _injections)
         {
-            if (skipFirst) skipFirst = false;
-            else sb.Append(", ");
+            if (skipFirst)
+            {
+                skipFirst = false;
+            }
+            else
+            {
+                sb.Append(", ");
+            }
             var typeToUse = injection.InjectedType ?? injection.Type;
-            if (injection.Required) sb.Append($"{typeToUse.Name} {injection.Name}");
-            else sb.Append($"{typeToUse.Name} {injection.Name} = null");
+            var typeName = GetFullTypeName(typeToUse);
+
+            sb.Append($"{typeName} {injection.Name}");
+            if (injection.IsOptional)
+            {
+                sb.Append(" = null");
+            }
         }
         sb.AppendLine(")");
     }
+
+
+    private static string GetFullTypeName(ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.IsGenericType)
+        {
+            var genericArguments = namedTypeSymbol.TypeArguments;
+            var genericArgumentsString = string.Join(", ", genericArguments.Select(arg => arg.ToDisplayString()));
+            return $"{namedTypeSymbol.Name}<{genericArgumentsString}>";
+        }
+        else
+        {
+            return typeSymbol.Name;
+        }
+    }
+
 
     private void AppendBody(StringBuilder sb, string indent)
     {
@@ -143,7 +170,7 @@ internal class SourceCodeFactory
             sb.Append(indent);
             sb.Append($"this.{injection.Name} = {injection.Name}");
 
-            if (injection.Required)
+            if (!injection.IsOptional)
             {
                 sb.Append($" ?? throw new ArgumentNullException(nameof({injection.Name}))");
             }
