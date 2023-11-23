@@ -161,4 +161,4 @@ Contributions are welcome! Please read our [contribution guidelines](CONTRIBUTIN
 
 ## Support
 
-For questions or issues, please open an [issue](https://github.com/Matt-17/ServiceInjection/issues) on GitHub.
+For questions or issues, please open an [issue](https://github.com/Code-iX/ServiceInjection/issues) on GitHub.

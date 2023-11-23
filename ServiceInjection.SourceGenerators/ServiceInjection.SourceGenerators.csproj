@@ -8,8 +8,8 @@
 		<IncludeBuildOutput>False</IncludeBuildOutput>
 		<RootNamespace>CodeIX.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Title>Service Injection</Title>
-		<RepositoryUrl>https://github.com/Matt-17/ServiceInjection</RepositoryUrl>
-		<VersionPrefix>0.1.1</VersionPrefix>
+		<RepositoryUrl>https://github.com/Code-iX/ServiceInjection</RepositoryUrl>
+		<VersionPrefix>0.1.2</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -18,7 +18,7 @@
 		<Authors>Matthias Voigt</Authors>
 		<Description>ServiceInjection is a Roslyn-based source generator for .NET that facilitates automatic dependency injection into classes. It allows services and dependencies to be inserted into classes without manually initializing them in the constructor.</Description>
 		<Copyright>2023 Matthias Voigt</Copyright>
-		<PackageProjectUrl>https://github.com/Matt-17/ServiceInjection</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/Code-iX/ServiceInjection</PackageProjectUrl>
 		<PackageTags>Services;ServiceProvider;Dependency;Injection;DependencyInjection;IoC</PackageTags>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<PackageIcon>ServiceInjection.png</PackageIcon>
