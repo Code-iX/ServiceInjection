@@ -5,7 +5,7 @@ using System.Text;
 
 using Microsoft.CodeAnalysis;
 
-namespace ServiceInjection.SourceGenerator
+namespace CodeIX.ServiceInjection.SourceGenerators
 {
     internal static class StringBuilderExtensions
     {
@@ -17,6 +17,36 @@ namespace ServiceInjection.SourceGenerator
             sb.AppendLine("// and will be lost if the code is regenerated.");
             sb.AppendLine("// </auto-generated>");
             return sb;
+        }
+
+        internal static void AppendUsings(this StringBuilder sb, IReadOnlyCollection<Injection> injections)
+        {
+            var namespaces = new HashSet<string>();
+
+            foreach (var injection in injections)
+            {
+                AddNamespace(namespaces, injection.Type);
+                AddNamespace(namespaces, injection.InjectedType);
+            }
+
+            foreach (var ns in namespaces)
+            {
+                sb.AppendLine($"using {ns};");
+            }
+
+            sb.AppendLine();
+        }
+
+        private static void AddNamespace(ISet<string> namespaces, ISymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                return;
+
+            var ns = typeSymbol.ContainingNamespace?.ToDisplayString();
+            if (!string.IsNullOrEmpty(ns) && ns != "<global namespace>")
+            {
+                namespaces.Add(ns);
+            }
         }
 
         internal static StringBuilder AppendCall(this StringBuilder sb, string indent, INamedTypeSymbol symbol, IEnumerable<Injection> injections)
@@ -119,6 +149,5 @@ namespace ServiceInjection.SourceGenerator
 
             return sb;
         }
-
     }
 }

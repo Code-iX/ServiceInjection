@@ -1,7 +1,7 @@
-﻿using ConsoleApp.StubClasses;
-using ServiceInjection;
+﻿using CodeIX.ServiceInjection;
+using ConsoleApp.StubClasses;
 
-namespace ConsoleApp;
+namespace ConsoleApp.TestClasses;
 
 [ServiceInjection]
 

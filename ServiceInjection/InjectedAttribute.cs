@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ServiceInjection
+namespace CodeIX.ServiceInjection
 {
     /// <summary>
     /// Marks a property or field to be injected by the service provider via constructor.

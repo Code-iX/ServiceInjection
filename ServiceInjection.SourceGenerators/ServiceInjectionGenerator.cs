@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.CodeAnalysis;
 
-namespace ServiceInjection.SourceGenerator;
+namespace CodeIX.ServiceInjection.SourceGenerators;
 
 [Generator]
-public class ServiceInjectionSourceGenerator : ISourceGenerator
+public class ServiceInjectionGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
@@ -101,6 +100,7 @@ public class ServiceInjectionSourceGenerator : ISourceGenerator
         var sb = new StringBuilder();
 
         sb.AppendHeader();
+        sb.AppendUsings(injections); // Append necessary using directives
 
         sb.AppendLine($"namespace {symbol.ContainingNamespace.ToDisplayString()}");
         sb.AppendLine("{");

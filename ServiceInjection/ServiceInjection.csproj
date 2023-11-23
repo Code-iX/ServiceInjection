@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>10</LangVersion>
+		<RootNamespace>CodeIX.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<PackageId>$(AssemblyName)</PackageId>
+		<AssemblyName>CodeIX.$(MSBuildProjectName)</AssemblyName>
 	</PropertyGroup>
 
 

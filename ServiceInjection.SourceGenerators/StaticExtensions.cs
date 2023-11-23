@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.CodeAnalysis;
 
-namespace ServiceInjection.SourceGenerator
+namespace CodeIX.ServiceInjection.SourceGenerators
 {
     internal static class StaticExtensions
     {

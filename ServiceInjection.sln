@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceInjection.SourceGenerator", "ServiceInjection.SourceGenerator\ServiceInjection.SourceGenerator.csproj", "{0FADC50A-4EB7-4285-AACB-0ADA3C149A64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceInjection.SourceGenerators", "ServiceInjection.SourceGenerators\ServiceInjection.SourceGenerators.csproj", "{0FADC50A-4EB7-4285-AACB-0ADA3C149A64}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceInjection", "ServiceInjection\ServiceInjection.csproj", "{02708BBD-F95F-4FE6-9212-6D4391BE5ADF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{F91CD629-648C-46A8-A729-33B6C52A7541}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceInjection.SourceGenerator.Tests", "ServiceInjection.SourceGenerator.Tests\ServiceInjection.SourceGenerator.Tests.csproj", "{4D0F9C89-64D6-4C7C-A5EF-3A987677FACA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A959D173-214B-45C4-A111-C7689CA4EC54}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A959D173-2
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInjection.SourceGenerators.Tests", "ServiceInjection.SourceGenerators.Tests\ServiceInjection.SourceGenerators.Tests.csproj", "{13BB96E1-9A97-4B90-939A-17B7FE13268F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,14 +30,10 @@ Global
 		{02708BBD-F95F-4FE6-9212-6D4391BE5ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02708BBD-F95F-4FE6-9212-6D4391BE5ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02708BBD-F95F-4FE6-9212-6D4391BE5ADF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F91CD629-648C-46A8-A729-33B6C52A7541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F91CD629-648C-46A8-A729-33B6C52A7541}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F91CD629-648C-46A8-A729-33B6C52A7541}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F91CD629-648C-46A8-A729-33B6C52A7541}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D0F9C89-64D6-4C7C-A5EF-3A987677FACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D0F9C89-64D6-4C7C-A5EF-3A987677FACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D0F9C89-64D6-4C7C-A5EF-3A987677FACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D0F9C89-64D6-4C7C-A5EF-3A987677FACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13BB96E1-9A97-4B90-939A-17B7FE13268F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13BB96E1-9A97-4B90-939A-17B7FE13268F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13BB96E1-9A97-4B90-939A-17B7FE13268F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13BB96E1-9A97-4B90-939A-17B7FE13268F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
