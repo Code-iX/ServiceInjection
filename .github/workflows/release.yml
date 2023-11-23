@@ -1,15 +1,11 @@
-name: NuGet Package Workflow
+name: NuGet
 
 on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 jobs:
-  build:
+  Build:
     env:
       BUILD_CONFIG: 'Release'
       SOLUTION: 'ServiceInjection.sln'
@@ -37,26 +33,26 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration $BUILD_CONFIG --no-restore --no-build --verbosity normal
 
-  # publish:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download NuGet Package
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: nuget-package
-  #         path: ./nupkgs
+  Publish:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download NuGet Package
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget-package
+          path: ./nupkgs
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v3
-  #       with:
-  #         dotnet-version: 6.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
 
-  #     - name: Publish NuGet Package
-  #       run: dotnet nuget push ./nupkgs/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET_API_KEY }}
+      - name: Publish NuGet Package
+        run: dotnet nuget push ./nupkgs/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET_API_KEY }}
 
-  create-release:
-    needs: build
+  Create-Release:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - name: Download NuGet Package Artifact
@@ -69,17 +65,18 @@ jobs:
         id: get_package_name
         run: echo "NUPKG_NAME=$(basename $(ls ./nupkgs/*.nupkg))" >> $GITHUB_ENV
   
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}b
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-  
+      - name: Update Release
+        id: update_release
+        run: |
+          RELEASE_ID=$(jq --raw-output .release.id "$GITHUB_EVENT_PATH")
+          RELEASE_DATA="{\"tag_name\": \"${{ github.ref }}\", \"name\": \"Release ${{ github.ref }}\", \"draft\": false, \"prerelease\": false}"
+          curl \
+            -X PATCH \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "$RELEASE_DATA" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID"
+
       - name: Upload NuGet Package as Release Asset
         uses: actions/upload-release-asset@v1
         env:

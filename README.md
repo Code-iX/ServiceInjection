@@ -1,3 +1,5 @@
+[![Master](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml/badge.svg)](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml)
+[![NuGet](https://github.com/Code-iX/ServiceInjection/actions/workflows/release.yml/badge.svg)](https://www.nuget.org/packages/CodeIX.ServiceInjection/)
 # Service Injection Package
 
 The `CodeIX.ServiceInjection` is a Roslyn-based source generator for .NET that facilitates automatic dependency injection into classes. It allows services and dependencies to be inserted into classes without manually initializing them in the constructor.

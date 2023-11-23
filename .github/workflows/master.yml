@@ -1,15 +1,12 @@
-name: Master build
+name: master
 
 on:
   push:
     branches:
     - master
-  pull_request:
-    branches:
-    - master
     
 jobs:
-  build:
+  Build:
     env:
       BUILD_CONFIG: 'Release'
       SOLUTION: 'ServiceInjection.sln'
@@ -26,3 +23,40 @@ jobs:
         run: dotnet build $SOLUTION --configuration Release
       - name: Run tests
         run: dotnet test --configuration $BUILD_CONFIG --no-restore --no-build --verbosity normal
+
+  Tag-Version:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2 
+      with:
+        fetch-depth: 0 
+
+    - name: Check if Directory.Build.props was changed
+      id: check_file
+      run: |
+        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'Directory.Build.props'; then
+          echo "FILE_CHANGED=true" >> $GITHUB_ENV
+        else
+          echo "FILE_CHANGED=false" >> $GITHUB_ENV
+        fi
+
+    - name: Extract version and create tag
+      if: env.FILE_CHANGED == 'true'
+      run: |
+        $xml = [xml](Get-Content Directory.Build.props)
+        $VERSION_PREFIX = $xml.Project.PropertyGroup.VersionPrefix
+        $VERSION_SUFFIX = $xml.Project.PropertyGroup.VersionSuffix
+
+        $FULL_VERSION = "v$VERSION_PREFIX"
+        if (-not [string]::IsNullOrEmpty($VERSION_SUFFIX)) {
+          $FULL_VERSION += "-$VERSION_SUFFIX"
+        }
+
+        git tag $FULL_VERSION
+        git push origin --tags
+      shell: pwsh
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
