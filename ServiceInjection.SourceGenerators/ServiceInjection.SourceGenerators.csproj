@@ -4,7 +4,7 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<IsRoslynComponent>True</IsRoslynComponent>
 		<LangVersion>10</LangVersion>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<IncludeBuildOutput>False</IncludeBuildOutput>
 		<RootNamespace>CodeIX.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 		<Title>Service Injection</Title>

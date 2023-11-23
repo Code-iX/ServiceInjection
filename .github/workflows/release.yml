@@ -1,37 +1,92 @@
-name: NuGet package
+name: NuGet Package Workflow
 
 on:
-  release:
-    types: [published]
-    
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  # release:
+  #   types: [published]
+
 jobs:
   build:
-
     env:
       BUILD_CONFIG: 'Release'
       SOLUTION: 'ServiceInjection.sln'
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+  
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1
+      - name: Restore dependencies
+        run: dotnet restore $SOLUTION
 
-    - name: Restore dependencies
-      run: nuget restore $SOLUTION
+      - name: Build
+        run: dotnet build $SOLUTION --configuration Release
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget-package
+          path: ./ServiceInjection.SourceGenerators/bin/Release/*.nupkg
 
-    - name: Build
-      run: dotnet build $SOLUTION --configuration $BUILD_CONFIG 
+      - name: Run tests
+        run: dotnet test --configuration $BUILD_CONFIG --no-restore --no-build --verbosity normal
 
-    - name: Run tests
-      run: dotnet test /p:Configuration=$BUILD_CONFIG --no-restore --no-build --verbosity normal
-      
-    - name: Publish
-      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+  # publish:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download NuGet Package
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: nuget-package
+  #         path: ./nupkgs
+
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: 6.0.x
+
+  #     - name: Publish NuGet Package
+  #       run: dotnet nuget push ./nupkgs/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET_API_KEY }}
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download NuGet Package Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: nuget-package
+          path: ./nupkgs
+  
+      - name: Get NuGet Package Name
+        id: get_package_name
+        run: echo "NUPKG_NAME=$(basename $(ls ./nupkgs/*.nupkg))" >> $GITHUB_ENV
+  
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}b
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+  
+      - name: Upload NuGet Package as Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nupkgs/${{ env.NUPKG_NAME }}
+          asset_name: ${{ env.NUPKG_NAME }}
+          asset_content_type: application/octet-stream
+
