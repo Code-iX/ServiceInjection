@@ -1,5 +1,7 @@
 ﻿using CodeIX.ServiceInjection.SourceGenerators;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace ServiceInjection.SourceGenerators.Tests;
 
 [TestClass]
