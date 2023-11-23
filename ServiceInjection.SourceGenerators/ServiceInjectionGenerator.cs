@@ -97,25 +97,10 @@ public class ServiceInjectionGenerator : ISourceGenerator
 
     internal static string GenerateSourceCode(INamedTypeSymbol symbol, IReadOnlyCollection<Injection> injections)
     {
-        var sb = new StringBuilder();
-
-        sb.AppendHeader();
-        sb.AppendUsings(injections); // Append necessary using directives
-
-        sb.AppendLine($"namespace {symbol.ContainingNamespace.ToDisplayString()}");
-        sb.AppendLine("{");
-        sb.AppendLine($"    partial class {symbol.Name}");
-        sb.AppendLine("    {");
-
-        sb.AppendCtor("        ", symbol, injections);
-        sb.AppendCall("            ", symbol, injections);
-        sb.AppendLine("        {");
-        sb.AppendBody("            ", injections);
-        sb.AppendLine("        }");
-
-        sb.AppendLine("    }");
-        sb.AppendLine("}");
-
-        return sb.ToString();
+        var fac = new SourceCodeFactory(symbol, injections)
+        {
+            DateTimeProvided = DateTime.Now
+        };
+        return fac.CreateSourceCode();
     }
 }
