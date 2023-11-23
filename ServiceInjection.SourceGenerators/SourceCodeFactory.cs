@@ -17,14 +17,13 @@ internal class SourceCodeFactory
     {
         _symbol = symbol ?? throw new ArgumentNullException(nameof(symbol));
         _injections = injections ?? throw new ArgumentNullException(nameof(injections));
-        DateTimeProvided = DateTime.Now; // Default value
+        DateTimeProvided = DateTime.Now;
     }
 
-    public string CreateSourceCode()
+    public string GenerateSourceCode()
     {
         var sb = new StringBuilder();
 
-        // Append Header, Usings, Namespace, Class, Constructor, Body, and Close Class/Namespace
         AppendHeader(sb);
         AppendUsings(sb);
         sb.AppendLine($"namespace {_symbol.ContainingNamespace.ToDisplayString()}");
@@ -92,8 +91,7 @@ internal class SourceCodeFactory
                 sb.AppendLine(")");
                 break;
             case > 1:
-                // TODO: Handle multiple constructors with parameters
-                // right now, we don't know which one to call
+                // TODO: Handle multiple constructors with parameters; right now, we don't know which one to call
                 break;
         }
     }
