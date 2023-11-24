@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-namespace ServiceInjection.SourceGenerators.Tests;
+namespace ServiceInjection.SourceGenerators.Tests.Helper;
 
 public static class CSharpSourceGeneratorVerifier<TSourceGenerator>
     where TSourceGenerator : ISourceGenerator, new()

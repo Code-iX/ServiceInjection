@@ -11,6 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\ServiceInjection.SourceGenerators\ServiceInjection.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />		
 		<ProjectReference Include="..\ServiceInjection.SourceGenerators\ServiceInjection.SourceGenerators.csproj" />
 		<ProjectReference Include="..\ServiceInjection\ServiceInjection.csproj" />
 	</ItemGroup>
@@ -32,6 +33,12 @@
 		<PackageReference Include="NuGet.Protocol" Version="6.8.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="SourceCode\TestClass_OneField_WithNamespace.g.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="SourceCode\TestClass_OneField_WithNamespace.g.cs" />
 	</ItemGroup>
 
 </Project>

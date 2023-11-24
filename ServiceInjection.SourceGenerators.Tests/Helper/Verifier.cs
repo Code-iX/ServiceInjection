@@ -6,7 +6,7 @@ using CodeIX.ServiceInjection.SourceGenerators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace ServiceInjection.SourceGenerators.Tests;
+namespace ServiceInjection.SourceGenerators.Tests.Helper;
 
 public static class Verifier
 {

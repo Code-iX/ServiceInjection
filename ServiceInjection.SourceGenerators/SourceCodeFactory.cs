@@ -36,7 +36,7 @@ internal class SourceCodeFactory
             .WithUsings(CreateUsings())
             .AddMembers(CreateClassAndNamespaceDeclaration());
 
-        return compilationUnit.NormalizeWhitespace(eol: "\n");
+        return compilationUnit.NormalizeWhitespace();
     }
 
     private MemberDeclarationSyntax CreateClassAndNamespaceDeclaration()
@@ -224,6 +224,8 @@ internal class SourceCodeFactory
     public SyntaxList<UsingDirectiveSyntax> CreateUsings()
     {
         var namespaces = GetNamespaces();
+
+        namespaces.Remove(_symbol.ContainingNamespace.ToDisplayString());
 
         var systemUsings = namespaces
             .Where(ns => ns.StartsWith("System"))
