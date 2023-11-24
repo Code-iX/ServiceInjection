@@ -8,8 +8,8 @@ namespace CodeIX.ServiceInjection.SourceGenerators;
 
 public class InjectionAnalyzer
 {
-    private static readonly string InjectedAttributeName = typeof(InjectedAttribute).FullName;
-    private static readonly string ServiceInjectionAttributeName = typeof(ServiceInjectionAttribute).FullName;
+    private readonly string InjectedAttributeName = typeof(InjectedAttribute).FullName;
+    private readonly string ServiceInjectionAttributeName = typeof(ServiceInjectionAttribute).FullName;
 
     public bool TryGetGeneratedCode(INamedTypeSymbol typeSymbol, out string source, out string hintName)
     {
@@ -55,7 +55,7 @@ public class InjectionAnalyzer
             ;
     }
 
-    internal static Injection CreateInjectionFromMember(ISymbol member)
+    internal Injection CreateInjectionFromMember(ISymbol member)
     {
         var injectedAttribute = member.GetAttributes()
             .Single(a => a.AttributeClass?.ToDisplayString() == InjectedAttributeName);
