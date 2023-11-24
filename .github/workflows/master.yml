@@ -29,14 +29,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2 
+      uses: actions/checkout@v2
       with:
-        fetch-depth: 0 
+        fetch-depth: 0
 
-    - name: Check if Directory.Build.props was changed
+    - name: Get last tag
+      id: lasttag
+      run: echo "LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+
+    - name: Check if version was changed
       id: check_file
       run: |
-        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q 'Directory.Build.props'; then
+        if git diff --name-only ${{ env.LAST_TAG }} ${{ github.sha }} | grep -q 'Directory.Build.props'; then
           echo "FILE_CHANGED=true" >> $GITHUB_ENV
         else
           echo "FILE_CHANGED=false" >> $GITHUB_ENV
@@ -57,6 +61,5 @@ jobs:
         git tag $FULL_VERSION
         git push origin --tags
       shell: pwsh
-
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
