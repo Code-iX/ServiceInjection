@@ -33,7 +33,7 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration $BUILD_CONFIG --no-restore --no-build --verbosity normal
 
-  Publish:
+  Publish-Package:
     needs: Build
     runs-on: ubuntu-latest
     steps:
@@ -42,14 +42,12 @@ jobs:
         with:
           name: nuget-package
           path: ./nupkgs 
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
+          
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
 
       - name: Publish NuGet Package
-        run: dotnet nuget push ./nupkgs/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET_API_KEY }}
+        run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
 
   Update-Release:
     needs: Build
