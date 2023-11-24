@@ -21,10 +21,10 @@ public class ServiceInjectionGenerator : ISourceGenerator
             // Check if the generator has been cancelled. If so, then stop working.
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (_injectionAnalyzer.TryGetGeneratedCode(typeSymbol, out var source, out var hintName))
-            {
-                context.AddSource(hintName, source);
-            }
+            if (!_injectionAnalyzer.TryGetGeneratedCode(typeSymbol, out var source, out var hintName))
+                continue;
+
+            context.AddSource(hintName, source);
         }
     }
 }

@@ -1,0 +1,11 @@
+<Project>
+  <ItemGroup>
+	<Compile Remove="SourceCode\*.cs" />
+	<Content Include="SourceCode\*">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+    <Content Update="SourceCode\*.g.cs">
+		<DependentUpon>$([System.String]::Copy(%(Filename)).Replace('.g', '.cs'))</DependentUpon>
+	</Content>
+  </ItemGroup>
+</Project>

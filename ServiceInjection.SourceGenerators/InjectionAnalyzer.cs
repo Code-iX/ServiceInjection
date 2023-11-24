@@ -8,15 +8,16 @@ namespace CodeIX.ServiceInjection.SourceGenerators;
 
 public class InjectionAnalyzer
 {
-    private const string InjectedAttributeName = nameof(InjectedAttribute);
-    private const string ServiceInjectionAttributeName = nameof(ServiceInjectionAttribute);
+    private static readonly string InjectedAttributeName = typeof(InjectedAttribute).FullName;
+    private static readonly string ServiceInjectionAttributeName = typeof(ServiceInjectionAttribute).FullName;
 
     public bool TryGetGeneratedCode(INamedTypeSymbol typeSymbol, out string source, out string hintName)
     {
         source = null;
         hintName = null;
 
-        var hasAttribute = typeSymbol.GetAttributes().Any(attr => attr.AttributeClass?.Name == ServiceInjectionAttributeName);
+        var attributeDatas = typeSymbol.GetAttributes();
+        var hasAttribute = attributeDatas.Any(attr => attr.AttributeClass?.ToDisplayString() == ServiceInjectionAttributeName);
         if (!hasAttribute)
             return false;
 
@@ -35,7 +36,10 @@ public class InjectionAnalyzer
 
     internal static string GetHintName(ISymbol symbol)
     {
-        var fullName = $"{symbol.ContainingNamespace.ToDisplayString()}.{symbol.Name}";
+        // Überprüfen, ob es sich um den globalen Namespace handelt
+        var fullName = symbol.ContainingNamespace.IsGlobalNamespace
+            ? symbol.Name
+            : $"{symbol.ContainingNamespace.ToDisplayString()}.{symbol.Name}";
 
         var safeFileName = fullName.Replace('.', '_');
 
@@ -46,7 +50,7 @@ public class InjectionAnalyzer
     internal IEnumerable<Injection> GetInjectedMembers(INamespaceOrTypeSymbol symbol)
     {
         return symbol.GetMembers()
-                .Where(m => m.GetAttributes().Any(a => a.AttributeClass?.Name == InjectedAttributeName))
+                .Where(m => m.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == InjectedAttributeName))
                 .Select(CreateInjectionFromMember)
             ;
     }
@@ -54,7 +58,7 @@ public class InjectionAnalyzer
     internal static Injection CreateInjectionFromMember(ISymbol member)
     {
         var injectedAttribute = member.GetAttributes()
-            .Single(a => a.AttributeClass?.Name == InjectedAttributeName);
+            .Single(a => a.AttributeClass?.ToDisplayString() == InjectedAttributeName);
 
         return new Injection
         {
