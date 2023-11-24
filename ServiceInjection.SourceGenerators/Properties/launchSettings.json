@@ -2,7 +2,7 @@
   "profiles": {
     "Run": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\ConsoleApp1\\ConsoleApp1.csproj"
+      "targetProject": "..\\ServiceInjection.SourceGenerators.Tests\\ServiceInjection.SourceGenerators.Tests.csproj"
     }
   }
 }

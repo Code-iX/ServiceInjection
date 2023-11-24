@@ -1,10 +1,4 @@
-﻿using System.Collections.Immutable;
-
-using CodeIX.ServiceInjection.SourceGenerators;
-
-using Microsoft.CodeAnalysis;
-
-using NSubstitute;
+﻿using CodeIX.ServiceInjection;
 
 namespace ServiceInjection.SourceGenerators.Tests;
 

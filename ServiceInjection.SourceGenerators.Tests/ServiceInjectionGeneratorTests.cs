@@ -1,7 +1,4 @@
-﻿using System.Xml.Linq;
-
-using CodeIX.ServiceInjection;
-using static ServiceInjection.SourceGenerators.Tests.Helper.Verifier;
+﻿using static ServiceInjection.SourceGenerators.Tests.Helper.Verifier;
 
 namespace ServiceInjection.SourceGenerators.Tests;
 

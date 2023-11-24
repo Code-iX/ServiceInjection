@@ -1,4 +1,4 @@
-﻿using CodeIX.ServiceInjection.SourceGenerators;
+﻿using CodeIX.ServiceInjection.SourceGenerators.Models;
 
 namespace ServiceInjection.SourceGenerators.Tests;
 
