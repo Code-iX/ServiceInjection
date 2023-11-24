@@ -43,7 +43,7 @@ public class ServiceInjectionGeneratorTests
 
         var content = File.ReadAllText(filePath)
             .Replace("\r\n", "\n")
-            .Replace("\n", Environment.NewLine);
+            .Replace("\n", "\r\n");
         return content;
     }
 }
