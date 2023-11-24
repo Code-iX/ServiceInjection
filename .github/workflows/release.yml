@@ -41,7 +41,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: nuget-package
-          path: ./nupkgs
+          path: ./nupkgs 
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -51,7 +51,7 @@ jobs:
       - name: Publish NuGet Package
         run: dotnet nuget push ./nupkgs/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET_API_KEY }}
 
-  Create-Release:
+  Update-Release:
     needs: Build
     runs-on: ubuntu-latest
     steps:
@@ -65,25 +65,35 @@ jobs:
         id: get_package_name
         run: echo "NUPKG_NAME=$(basename $(ls ./nupkgs/*.nupkg))" >> $GITHUB_ENV
   
-      - name: Update Release
-        id: update_release
+      - name: Get Release Information and Update Release
+        id: get_release_info
         run: |
-          RELEASE_ID=$(jq --raw-output .release.id "$GITHUB_EVENT_PATH")
-          RELEASE_DATA="{\"tag_name\": \"${{ github.ref }}\", \"name\": \"Release ${{ github.ref }}\", \"draft\": false, \"prerelease\": false}"
-          curl \
-            -X PATCH \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "$RELEASE_DATA" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID"
-
+          $tagName = "${{ github.ref }}".Replace("refs/tags/", "")
+          $headers = @{
+            "Authorization" = "token ${{ secrets.GITHUB_TOKEN }}"
+            "Accept" = "application/vnd.github.v3+json"
+          }
+          $releaseUrl = "https://api.github.com/repos/${{ github.repository }}/releases/tags/$tagName"
+          $releaseInfo = Invoke-RestMethod -Uri $releaseUrl -Method Get -Headers $headers
+          $uploadUrl = $releaseInfo.upload_url
+          echo "UPLOAD_URL=$uploadUrl" | Out-File -Append -FilePath $env:GITHUB_ENV
+       
+          # Update Release
+          $releaseData = @{
+            "tag_name" = $tagName
+            "name" = "Release $tagName"
+            "draft" = $false
+            "prerelease" = $false
+          }
+          Invoke-RestMethod -Uri "https://api.github.com/repos/${{ github.repository }}/releases/$($releaseInfo.id)" -Method Patch -Headers $headers -Body ($releaseData | ConvertTo-Json)
+        shell: pwsh
+      
       - name: Upload NuGet Package as Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ env.UPLOAD_URL }}
           asset_path: ./nupkgs/${{ env.NUPKG_NAME }}
           asset_name: ${{ env.NUPKG_NAME }}
           asset_content_type: application/octet-stream
-
