@@ -10,12 +10,7 @@ public static class Verifier
 {
     public static async Task VerifySourceCode(string code, string filename, string generated)
     {
-        if (!generated.EndsWith(Environment.NewLine))
-        {
-            generated += Environment.NewLine;
-        }
-        
-        var test = new CSharpSourceGeneratorVerifier<ServiceInjectionGenerator>.Test
+       var test = new CSharpSourceGeneratorVerifier<ServiceInjectionGenerator>.Test
         {
             TestState =
             {
