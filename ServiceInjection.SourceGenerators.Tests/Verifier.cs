@@ -1,6 +1,8 @@
 ﻿using System.Text;
+
 using CodeIX.ServiceInjection;
 using CodeIX.ServiceInjection.SourceGenerators;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -10,7 +12,7 @@ public static class Verifier
 {
     public static async Task VerifySourceCode(string code, string filename, string generated)
     {
-       var test = new CSharpSourceGeneratorVerifier<ServiceInjectionGenerator>.Test
+        var test = new CSharpSourceGeneratorVerifier<ServiceInjectionGenerator>.Test
         {
             TestState =
             {

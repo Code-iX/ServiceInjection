@@ -36,7 +36,7 @@ internal class SourceCodeFactory
             .WithUsings(CreateUsings())
             .AddMembers(CreateClassAndNamespaceDeclaration());
 
-        return compilationUnit.NormalizeWhitespace();
+        return compilationUnit.NormalizeWhitespace(eol: "\n");
     }
 
     private MemberDeclarationSyntax CreateClassAndNamespaceDeclaration()
