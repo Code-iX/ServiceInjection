@@ -5,11 +5,11 @@ namespace CodeIX.ServiceInjection.SourceGenerators;
 [Generator]
 public class ServiceInjectionGenerator : ISourceGenerator
 {
-    private readonly InjectionAnalyzer _injectionAnalyzer = new();
+    private InjectionAnalyzer _injectionAnalyzer;
 
     public void Initialize(GeneratorInitializationContext context)
     {
-        // No initialization required
+        _injectionAnalyzer = new InjectionAnalyzer();
     }
 
     public void Execute(GeneratorExecutionContext context)
