@@ -95,15 +95,15 @@ By default, the type of the injected property or field is used to determine the 
 [ServiceInjection]
 public partial class ExampleClass
 {
-	[Injected(injectedType: typeof(Service1))]
-	public IService Service1Property { get; set; } // will inject Service1
-
-	[Injected(injectedType: typeof(Service2))]
-	public IService Service2Property { get; set; } // will inject Service2
+    [Injected(injectedType: typeof(Service1))]
+    public IService Service1Property { get; set; } // will inject Service1
+    
+    [Injected(injectedType: typeof(Service2))]
+    public IService Service2Property { get; set; } // will inject Service2
 }
 ```
 
-Keep in mind that the injected type must be registered in the service collection by its inherited type.
+_Keep in mind that the injected type must be registered in the service collection by its inherited type instead of base type._
 
 ### Custom Constructor
 
@@ -113,13 +113,14 @@ You can still create a constructor for your class. The source generator will cal
 [ServiceInjection]
 public partial class ExampleClass
 {
-	public ExampleClass()
-	{
+    public ExampleClass()
+    {
         // do something
-	}
+        // keep in mind that the injected services are not available here
+    }
 
-	[Injected]
-	public Service1 Service1Property { get; set; }
+    [Injected]
+    public Service1 Service1Property { get; set; }
 }
 ```
 
@@ -129,17 +130,17 @@ You can also create a constructor with parameters. The source generator will cal
 [ServiceInjection]
 public partial class ExampleClass
 {
-	public ExampleClass(Service1 service1Property)
-	{
-		// do something with service1Property before it is injected, like configuring it
-	}
+    public ExampleClass(Service1 service1Property)
+    {
+        // do something with service1Property before it is injected, like configuration
+    }
 
-	[Injected]
-	public Service1 Service1Property { get; set; }
+    [Injected]
+    Service1 Service1Property { get; set; }
 }
 ```
 
-Keep in mind that the injected services are injected after the constructor is called. This means that the injected services are not available in the constructor.
+_Keep in mind that the injected services are injected after the constructor is called. This means that the injected services are not available in the constructor._
 
 Also it's constrained by the ServiceProviders ability to resolve the constructor parameters. If the ServiceProvider can't resolve the constructor parameters, it will throw an exception.
 
@@ -155,6 +156,8 @@ public partial class ExampleClass
     public IEnumerable<IService> ServiceProperty { get; set; }
 }
 ```
+
+_This must be supported by the ServiceProvider. For example, the ServiceProvider of Microsoft.Extensions.DependencyInjection supports this._
 
 ## License
 
