@@ -1,6 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using CodeIX.ServiceInjection.SourceGenerators.Helpers;
+using Microsoft.CodeAnalysis;
 
-namespace CodeIX.ServiceInjection.SourceGenerators;
+namespace CodeIX.ServiceInjection.SourceGenerators.GeneratorModel;
 
 [Generator]
 public class ServiceInjectionGenerator : ISourceGenerator

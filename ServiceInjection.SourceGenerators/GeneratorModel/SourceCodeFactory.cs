@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using CodeIX.ServiceInjection.SourceGenerators.Models;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace CodeIX.ServiceInjection.SourceGenerators;
+namespace CodeIX.ServiceInjection.SourceGenerators.GeneratorModel;
 
 internal class SourceCodeFactory
 {
@@ -106,10 +108,11 @@ internal class SourceCodeFactory
 
     private IEnumerable<ArgumentSyntax> GetConstructorArguments(IMethodSymbol constructor)
     {
-        return constructor.Parameters
-            .Select(parameter => Argument(IdentifierName(MatchParameterList(parameter))));
-    }
+        var resolver = new ArgumentResolver(_injections, constructor.Parameters);
 
+        return constructor.Parameters
+            .Select(parameter => Argument(IdentifierName(resolver.Match(parameter))));
+    }
 
     private BlockSyntax CreateMethodBody()
     {
@@ -168,27 +171,6 @@ internal class SourceCodeFactory
 
         var ns = typeSymbol.ContainingNamespace.ToDisplayString();
         if (!string.IsNullOrEmpty(ns)) namespaces.Add(ns);
-    }
-
-
-    private string MatchParameterList(IParameterSymbol parameter)
-    {
-        // match by class type
-        var matchByType = _injections.FirstOrDefault(i => SymbolEqualityComparer.Default.Equals(i.Type, parameter.Type));
-        if (matchByType != null)
-            return matchByType.Name;
-
-        // match by injected class type
-        var matchByInjectedType = _injections.FirstOrDefault(i => SymbolEqualityComparer.Default.Equals(i.InjectedType, parameter.Type));
-        if (matchByInjectedType != null)
-            return matchByInjectedType.Name;
-
-        // match by name
-        var matchByName = _injections.FirstOrDefault(i => i.Name == parameter.Name);
-        if (matchByName != null)
-            return matchByName.Name;
-
-        return "default";
     }
 
 

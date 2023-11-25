@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using CodeIX.ServiceInjection.SourceGenerators.Models;
 
 using Microsoft.CodeAnalysis;
 
-namespace CodeIX.ServiceInjection.SourceGenerators;
+namespace CodeIX.ServiceInjection.SourceGenerators.GeneratorModel;
 
 public class InjectionAnalyzer
 {

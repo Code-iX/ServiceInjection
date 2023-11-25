@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace CodeIX.ServiceInjection.SourceGenerators
+namespace CodeIX.ServiceInjection.SourceGenerators.Helpers
 {
     internal static class StaticExtensions
     {
@@ -13,7 +13,7 @@ namespace CodeIX.ServiceInjection.SourceGenerators
                 case INamespaceSymbol namespaceSymbol:
                     foreach (var member in namespaceSymbol.GetMembers())
                     {
-                        foreach (var type in GetAllTypes(member))
+                        foreach (var type in member.GetAllTypes())
                         {
                             yield return type;
                         }

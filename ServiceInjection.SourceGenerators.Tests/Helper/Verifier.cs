@@ -1,8 +1,7 @@
 ﻿using System.Text;
 
 using CodeIX.ServiceInjection;
-using CodeIX.ServiceInjection.SourceGenerators;
-
+using CodeIX.ServiceInjection.SourceGenerators.GeneratorModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
