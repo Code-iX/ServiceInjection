@@ -1,11 +1,43 @@
-[![Master](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml/badge.svg)](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml)
-[![Release](https://github.com/Code-iX/ServiceInjection/actions/workflows/release.yml/badge.svg)](https://github.com/Code-iX/ServiceInjection/actions/workflows/release.yml)
-[![NuGet](https://img.shields.io/nuget/v/CodeIX.ServiceInjection.svg)](https://www.nuget.org/packages/CodeIX.ServiceInjection/)
+[![Master](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml/badge.svg)](https://github.com/Code-iX/ServiceInjection/actions/workflows/master.yml) [![Release](https://github.com/Code-iX/ServiceInjection/actions/workflows/release.yml/badge.svg)](https://github.com/Code-iX/ServiceInjection/actions/workflows/release.yml) [![NuGet](https://img.shields.io/nuget/v/CodeIX.ServiceInjection.svg)](https://www.nuget.org/packages/CodeIX.ServiceInjection/) [![GitHub](https://img.shields.io/github/license/Code-iX/ServiceInjection)](LICENSE.md) 
 
-# Service Injection Package
-
+# CodeIX.ServiceInjection
 
 The `CodeIX.ServiceInjection` is a Roslyn-based source generator for .NET that facilitates automatic dependency injection into classes. It allows services and dependencies to be inserted into classes without manually initializing them in the constructor.
+
+## Table of Contents
+
+- [Motivation](#motivation)- 
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [License](#license)
+- [Contributing](#contributing)
+- [Support](#support)
+
+## Motivation
+
+Dependency injection is a powerful technique for creating loosely coupled applications. However, it can be tedious to manually inject dependencies into classes. This is especially true for large projects with many dependencies. The `CodeIX.ServiceInjection` package aims to solve this problem by automatically injecting services and dependencies into classes.
+
+Usually you would have to write something like this:
+
+```csharp
+public class MyClass
+{
+    private readonly MyService1 _myService1;
+    private readonly MyService2 _myService2;
+    private readonly MyService3 _myService3;
+    
+    public MyClass(MyService1 myService1, MyService2 myService2, MyService3 myService3)
+    {
+        _myService1 = myService1;
+        _myService2 = myService2;
+        _myService3 = myService3;
+    }
+}
+```
+
+A lot of boilerplate code is required to inject the services into the class. This is where the `CodeIX.ServiceInjection` package comes in. It automatically injects the services into the class by creating a partial class with the necessary constructor. 
 
 ## Features
 
@@ -166,6 +198,13 @@ This project is licensed under the [MIT License](LICENSE.md).
 ## Contributing
 
 Contributions are welcome! Please read our [contribution guidelines](CONTRIBUTING.md) for more information.
+
+### Roadmap
+
+- [x] Property injection
+- [x] Field injection
+- [ ] Constructor parameter injection
+- [ ] Support registering services in the service collection
 
 ## Support
 
